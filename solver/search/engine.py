@@ -68,71 +68,105 @@ def build_tile_transforms(train_pairs):
 
 
 def search_single_transforms(task):
-    from solver.rules.color_solver import (
-        build_multi_recolor_transforms,
-        build_geometric_plus_color
-    )
+    """
+    Hybrid search:
+    - static transforms
+    - dynamic generated transforms
+    """
 
     train_pairs = task['train']
     test_inputs = task['test']
 
+    # =====================================================
+    # STATIC TRANSFORMS
+    # =====================================================
+
     all_transforms = {}
-    all_transforms.update(TRANSFORM_REGISTRY)
-    all_transforms.update(build_color_transforms(train_pairs))
-    all_transforms.update(build_tile_transforms(train_pairs))
-    all_transforms.update(build_multi_recolor_transforms(train_pairs))
 
-    base_geoms = {k: v for k, v in TRANSFORM_REGISTRY.items()
-                  if any(x in k for x in ['rotate', 'flip', 'scale'])}
-    all_transforms.update(build_geometric_plus_color(train_pairs, base_geoms))
+    all_transforms.update(
+        TRANSFORM_REGISTRY
+    )
 
-    # Object-based transforms
-    all_transforms.update(build_interior_fill_transforms(train_pairs))
-    all_transforms.update(build_recolor_by_size_transforms(train_pairs))
+    all_transforms.update(
+        build_color_transforms(train_pairs)
+    )
 
-    # Gravity transforms
-    all_transforms['gravity_down']  = gravity_down
-    all_transforms['gravity_up']    = gravity_up
-    all_transforms['gravity_left']  = gravity_left
-    all_transforms['gravity_right'] = gravity_right
+    all_transforms.update(
+        build_tile_transforms(train_pairs)
+    )
 
-    # Extended object transforms
-    all_transforms['fill_interior_match_border'] = fill_interior_match_border
-    all_transforms['remove_smaller_objects']     = remove_smaller_objects
-    all_transforms['remove_larger_objects']      = remove_larger_objects
-    all_transforms.update(build_keep_color_transforms(train_pairs))
+    # =====================================================
+    # DYNAMIC TRANSFORMS
+    # =====================================================
 
-    # Pattern transforms
-    all_transforms.update(PATTERN_TRANSFORMS)
+    try:
+
+        from solver.search.dynamic_generator import (
+            build_dynamic_transforms
+        )
+
+        dynamic = build_dynamic_transforms(
+            task
+        )
+
+        all_transforms.update(dynamic)
+
+    except Exception as e:
+
+        print(
+            "[WARN] Dynamic generator failed:",
+            e
+        )
+
+    # =====================================================
+    # SEARCH
+    # =====================================================
 
     results = []
+
     for name, fn in all_transforms.items():
-        score = score_against_all_pairs(fn, train_pairs)
-        if score > 0:
-            predictions = []
-            for test in test_inputs:
-                try:
-                    pred = fn(test['input'])
-                    predictions.append(pred)
-                except Exception:
-                    predictions.append(test['input'])
 
-            results.append({
-                'transform'  : name,
-                'score'      : score,
-                'predictions': predictions,
-            })
+        score = score_against_all_pairs(
+            fn,
+            train_pairs
+        )
 
-    results.sort(key=lambda x: x['score'], reverse=True)
+        if score <= 0:
+            continue
+
+        predictions = []
+
+        for test in test_inputs:
+
+            try:
+
+                pred = fn(
+                    test['input']
+                )
+
+                predictions.append(pred)
+
+            except Exception:
+
+                predictions.append(
+                    test['input']
+                )
+
+        results.append({
+
+            'transform' : name,
+
+            'score'     : score,
+
+            'predictions': predictions,
+        })
+
+    results.sort(
+        key=lambda x: x['score'],
+        reverse=True
+    )
+
     return results
-
-    # Rectangle transforms
-    all_transforms['complete_rect_corners']    = complete_rectangle_corners
-    all_transforms['complete_rect_dominant']   = complete_rectangle_corners_dominant
-    all_transforms['draw_rectangle_border']    = draw_rectangle_border
-
-    # Line transforms
-    all_transforms.update(LINE_TRANSFORMS)
 
 def solve_task(task, top_k=3):
     from solver.search.chainer import search_chained_transforms
