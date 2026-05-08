@@ -1,18 +1,34 @@
 # solver/dsl.py
 
 from solver.rules.transformations import (
+
     rotate_90,
     rotate_180,
     rotate_270,
+
     flip_horizontal,
     flip_vertical,
+
     tile_repeat,
     scale_up,
+
     tile_alternating_fliph_by_row,
+)
+
+from solver.rules.object_ops import (
+
+    move_up,
+    move_down,
+    move_left,
+    move_right,
 )
 
 
 DSL_OPERATIONS = {
+
+    # ========================================================
+    # ROTATIONS
+    # ========================================================
 
     'ROT90':
         lambda g: rotate_90(g),
@@ -23,35 +39,89 @@ DSL_OPERATIONS = {
     'ROT270':
         lambda g: rotate_270(g),
 
+    # ========================================================
+    # FLIPS
+    # ========================================================
+
     'FLIP_H':
         lambda g: flip_horizontal(g),
 
     'FLIP_V':
         lambda g: flip_vertical(g),
 
+    # ========================================================
+    # TILING
+    # ========================================================
+
     'TILE2':
-        lambda g: tile_repeat(g, 2, 2),
+        lambda g: tile_repeat(
+            g,
+            2,
+            2
+        ),
 
     'TILE3':
-        lambda g: tile_repeat(g, 3, 3),
+        lambda g: tile_repeat(
+            g,
+            3,
+            3
+        ),
+
+    # ========================================================
+    # SCALING
+    # ========================================================
 
     'SCALE2':
-        lambda g: scale_up(g, 2),
+        lambda g: scale_up(
+            g,
+            2
+        ),
 
     'SCALE3':
-        lambda g: scale_up(g, 3),
+        lambda g: scale_up(
+            g,
+            3
+        ),
+
+    # ========================================================
+    # SPECIAL PATTERNS
+    # ========================================================
 
     'ROW_ALT_TILE3':
+
         lambda g:
+
             tile_alternating_fliph_by_row(
+
                 g,
+
                 3,
+
                 3
             ),
+
+    # ========================================================
+    # OBJECT OPS
+    # ========================================================
+
+    'MOVE_UP':
+        lambda g: move_up(g),
+
+    'MOVE_DOWN':
+        lambda g: move_down(g),
+
+    'MOVE_LEFT':
+        lambda g: move_left(g),
+
+    'MOVE_RIGHT':
+        lambda g: move_right(g),
 }
 
 
-def execute_program(grid, program):
+def execute_program(
+    grid,
+    program
+):
 
     result = grid
 
@@ -74,21 +144,29 @@ if __name__ == "__main__":
 
     test = [
 
-        [1, 2],
-        [3, 4]
+        [0,0,0,0,0],
+
+        [0,2,2,0,0],
+
+        [0,2,2,0,0],
+
+        [0,0,0,0,0],
     ]
 
     program = [
 
-        'ROW_ALT_TILE3'
+        'MOVE_RIGHT'
     ]
 
     result = execute_program(
+
         test,
+
         program
     )
 
     print("\nPROGRAM:")
+
     print(program)
 
     print("\nRESULT:\n")

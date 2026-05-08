@@ -106,7 +106,12 @@ def suggest_operations(task):
 
         'FLIP_H',
         'FLIP_V',
-    ])
+
+	'MOVE_UP',
+    	'MOVE_DOWN',
+    	'MOVE_LEFT',
+    	'MOVE_RIGHT',
+    	])
 
     return list(suggested)
 
