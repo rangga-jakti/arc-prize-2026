@@ -1,48 +1,151 @@
-## Transformation Library (50+ rules)
-- **Geometric:** rotate 90/180/270, flip H/V/diagonal, transpose
-- **Tiling:** NxM repeat, alternating flip variants
-- **Color:** single/multi recolor, color mapping inference
-- **Object:** fill enclosed, fill interior, gravity (4 directions)
-- **Pattern:** symmetry completion (H/V/diagonal/point)
-- **Spatial:** rectangle corner completion, line drawing
-- **Filtering:** keep/remove by color frequency or object size
+# ARC Prize 2026 — Symbolic ARC Solver
 
-## Results
-| Dataset | Tasks | Perfect Match | Score |
-|---------|-------|---------------|-------|
-| Training (1000) | 1076 | 33 | 3.07% |
-| Evaluation (120) | 120 | 0 | 0.00% |
-| Kaggle Hidden Test | 240 | - | 0.00% |
+A research-oriented ARC-AGI solver combining:
 
-## Key Learnings
-- ARC-AGI-2 tasks require **compositional reasoning** beyond simple transforms
-- Rule-based approaches plateau around 3-5% without ML components
-- 69% of tasks have same-size input/output → color/object operations dominate
-- Evaluation dataset has higher avg colors (5.2 vs 3.8) → more complex tasks
+- Symbolic DSL program synthesis
+- Beam search
+- Heuristic-guided reasoning
+- Object-centric transformations
+- Dynamic pattern mining
 
-## Setup
-```powershell
-python -m venv venv
-.\venv\Scripts\Activate.ps1
-pip install -r requirements.txt
+Built for the ARC Prize 2026 competition.
+
+---
+
+# Features
+
+## Symbolic DSL
+
+Custom domain-specific language (DSL) for ARC transformations:
+
+- Rotations
+- Flips
+- Scaling
+- Tiling
+- Alternating tile patterns
+- Object movement operations
+
+Example:
+
+```python
+[
+    "MOVE_RIGHT",
+    "ROT90",
+    "ROW_ALT_TILE3"
+]
 ```
 
-## Run
-```powershell
-# Evaluate on training data
-python test_full.py
+---
 
-# Generate Kaggle submission
-python generate_submission.py
+# Beam Search Program Synthesis
+
+The solver searches over symbolic programs using:
+
+- Heuristic-guided beam search
+- Candidate ranking
+- Program composition
+- Transformation scoring
+
+---
+
+# Object-Centric Reasoning
+
+The system detects connected objects and reasons about:
+
+- Object size
+- Bounding boxes
+- Spatial relationships
+- Relative positioning
+- Object movement
+
+---
+
+# Solver Architecture
+
+```text
+ARC Task
+   ↓
+Primitive Miner
+   ↓
+Pattern Analysis
+   ↓
+Heuristic Generator
+   ↓
+Beam Search
+   ↓
+DSL Program Search
+   ↓
+Prediction
 ```
 
-## Next Steps
-- [ ] LLM-assisted reasoning (Gemini/Claude API)
-- [ ] Transform chaining (2-3 step compositions)
-- [ ] Neural program synthesis
-- [ ] Test-time training
+---
 
-## Competition
-- Platform: Kaggle
-- Competition: ARC Prize 2026 - ARC-AGI-2
-- Metric: Exact match (both grid dimensions and all cell values)
+# Current Capabilities
+
+- Geometric transformations
+- Dynamic tiling detection
+- Alternating row pattern detection
+- Object movement reasoning
+- Symbolic program synthesis
+
+---
+
+# Example Result
+
+Program discovered automatically:
+
+```python
+["ROW_ALT_TILE3"]
+```
+
+Output score:
+
+```text
+100% exact match
+```
+
+---
+
+# Benchmark
+
+| System | Solved Tasks |
+|---|---|
+| Rule-based baseline | 18 |
+| Beam Search DSL Solver | In Progress |
+| Object DSL Solver | In Progress |
+
+---
+
+# Tech Stack
+
+- Python
+- NumPy
+- Symbolic AI
+- Beam Search
+- Object Detection
+- ARC-AGI reasoning
+
+---
+
+# Future Work
+
+- Object copy operations
+- Compositional object planning
+- Better heuristics
+- Neural-guided search
+- Memory-augmented reasoning
+- Hybrid LLM + symbolic solving
+
+---
+
+# Competition
+
+ARC Prize 2026 (ARC-AGI-2)
+
+https://www.kaggle.com/competitions/arc-prize-2026-arc-agi-2
+
+---
+
+# Author
+
+Rangga Jakti
