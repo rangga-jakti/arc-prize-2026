@@ -1,0 +1,15 @@
+# Python
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+
+# Virtual env
+venv/
+
+# ARC outputs
+submission.json
+
+# OS
+.DS_Store
+Thumbs.db
