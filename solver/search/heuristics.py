@@ -113,7 +113,45 @@ def suggest_operations(task):
     	'MOVE_RIGHT',
     	])
 
-    return list(suggested)
+    ranked = []
+    # ============================================
+    # PRIORITIZE OBJECT MOVEMENT
+    # ============================================
+    for a in analysis:
+        size = a['size_info']
+        if size['same_shape']:
+            ranked.extend([
+                'MOVE_RIGHT',
+                'MOVE_LEFT',
+                'MOVE_UP',
+                'MOVE_DOWN',
+            ])
+    # ============================================
+    # PRIORITIZE TILING
+    # ============================================
+    for a in analysis:
+        tiling = a.get(
+            'tiling_info',
+            {}
+        )
+        if tiling.get('is_tiling', False):
+            ranked.extend([
+                'ROW_ALT_TILE3',
+                'TILE3',
+                'SCALE3',
+            ])
+    # ============================================
+    # FALLBACK
+    # ============================================
+    for op in suggested:
+        if op not in ranked:
+            ranked.append(op)
+    # Remove duplicates while preserving order
+    dedup = []
+    for op in ranked:
+        if op not in dedup:
+            dedup.append(op)
+    return dedup
 
 
 if __name__ == "__main__":

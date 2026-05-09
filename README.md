@@ -138,6 +138,26 @@ Output score:
 
 ---
 
+# Visual Demo
+
+Input → Solver Prediction → Ground Truth
+
+![ARC Demo](demo_result.png)
+
+The solver automatically discovered the symbolic program:
+
+```python
+["ROW_ALT_TILE3"]
+```
+
+which achieved:
+
+```text
+100% exact match
+```
+
+---
+
 # Competition
 
 ARC Prize 2026 (ARC-AGI-2)
