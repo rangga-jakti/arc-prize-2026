@@ -452,7 +452,7 @@ TRANSFORM_REGISTRY = {
     'scale_up_3' : lambda g:
         scale_up(g, 3),
 
-    'fill_enclosed' : fill_enclosed,
+    # fill_enclosed disabled - use build_interior_fill_transforms
 
     'invert_colors' : invert_colors,
 
