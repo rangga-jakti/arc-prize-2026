@@ -22,3 +22,6 @@ __pycache__/
 # Notebook temp
 temp_notebook*/
 temp_output/
+
+.env
+*.env
