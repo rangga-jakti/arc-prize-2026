@@ -10,9 +10,9 @@ ARC-AGI tasks require inferring a transformation rule from 2-5 input/output exam
 \\\
 solver/
 +-- search/
-¦   +-- engine.py          # Main orchestrator - generates + scores all transforms
-¦   +-- scorer.py          # Pixel accuracy scoring
-¦   +-- chainer.py         # 2-transform chaining
+Â¦   +-- engine.py          # Main orchestrator - generates + scores all transforms
+Â¦   +-- scorer.py          # Pixel accuracy scoring
+Â¦   +-- chainer.py         # 2-transform chaining
 +-- rules/
     +-- transformations.py  # Geometric: rotate, flip, scale, tile (50+ transforms)
     +-- object_solver.py    # Object-based: fill_interior, gravity
@@ -54,10 +54,6 @@ python generate_submission_v3.py
 - High pixel accuracy (0.9+) does not mean the prediction is correct - only 1.0 is reliable
 - Dynamic transforms (learned from training pairs) outperform static transforms
 - The fill_interior pattern (enclosed region + learned fill color) is one of the most common ARC patterns
-## Next Steps
-- [ ] LLM integration (Ollama local / OpenRouter)
-- [ ] Program synthesis via DSL search
-- [ ] Test-time training
 ## Competition
 - Platform: [Kaggle ARC Prize 2026](https://www.kaggle.com/competitions/arc-prize-2026-arc-agi-2)
 - Prize pool: \,000
