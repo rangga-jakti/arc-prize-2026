@@ -1,16 +1,24 @@
-# Python
+# Virtual environment
+venv/
+# Data files (terlalu besar)
+data/
+# Outputs/submissions
+outputs/submissions/*.json
+submission.json
+# Temporary files
+temp_*/
+*.png
+*.log
+# Python cache
 __pycache__/
 *.pyc
 *.pyo
-*.pyd
-.env
-
-# Virtual env
-venv/
-
-# ARC outputs
-submission.json
-
-# OS
-.DS_Store
-Thumbs.db
+.pytest_cache/
+# Jupyter
+.ipynb_checkpoints/
+# IDE
+.vscode/
+.idea/
+# Notebook temp
+temp_notebook*/
+temp_output/

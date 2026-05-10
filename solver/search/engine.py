@@ -19,6 +19,8 @@ from solver.rules.rectangle_solver import (
     complete_rectangle_corners_dominant,
     draw_rectangle_border
 )
+
+
 def build_color_transforms(train_pairs):
     transforms = {}
     all_input_colors  = set()
