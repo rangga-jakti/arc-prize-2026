@@ -30,6 +30,67 @@ ARC_COLORS = {
     9: "#870C25",
 }
 
+def visualize_single_pair(
+
+    inp,
+    pred,
+    out,
+
+    save_path=None
+):
+
+    fig, axs = plt.subplots(
+        1,
+        3,
+        figsize=(9, 3)
+    )
+
+    titles = [
+
+        'Input',
+        'Prediction',
+        'Ground Truth'
+    ]
+
+    grids = [
+
+        inp,
+        pred,
+        out
+    ]
+
+    for ax, title, grid in zip(
+        axs,
+        titles,
+        grids
+    ):
+
+        ax.imshow(
+            np.array(grid),
+            interpolation='nearest'
+        )
+
+        ax.set_title(title)
+
+        ax.set_xticks([])
+        ax.set_yticks([])
+
+    plt.tight_layout()
+
+    if save_path:
+
+        plt.savefig(save_path)
+
+        print(
+            f'Saved: {save_path}'
+        )
+
+    else:
+
+        plt.show()
+
+    plt.close()
+
 
 def grid_to_rgb(grid):
 

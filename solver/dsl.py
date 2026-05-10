@@ -23,6 +23,26 @@ from solver.rules.object_ops import (
     move_right,
 )
 
+from solver.rules.filter_ops import (
+
+    extract_compact_object,
+)
+
+from solver.rules.extract_ops import (
+
+    extract_largest_object,
+)
+
+from solver.rules.copy_ops import (
+
+    copy_largest_right,
+)
+
+from solver.rules.color_ops import (
+
+    recolor_largest,
+)
+
 
 DSL_OPERATIONS = {
 
@@ -115,6 +135,40 @@ DSL_OPERATIONS = {
 
     'MOVE_RIGHT':
         lambda g: move_right(g),
+
+    # ========================================================
+    # COPY OPS
+    # ========================================================
+
+    'COPY_LARGEST_RIGHT':
+        lambda g: copy_largest_right(g),
+
+    # ========================================================
+    # COLOR OPS
+    # ========================================================
+
+    'RECOLOR_LARGEST':
+        lambda g: recolor_largest(
+            g,
+            new_color=9
+        ),
+
+    # ========================================================
+    # EXTRACTION OPS
+    # ========================================================
+
+    'EXTRACT_LARGEST':
+
+        lambda g:
+
+            extract_largest_object(g),
+
+'EXTRACT_COMPACT':
+
+    lambda g:
+
+        extract_compact_object(g),
+
 }
 
 
@@ -144,18 +198,17 @@ if __name__ == "__main__":
 
     test = [
 
-        [0,0,0,0,0],
+        [0,0,0,0],
 
-        [0,2,2,0,0],
+        [0,2,2,0],
 
-        [0,2,2,0,0],
+        [0,2,2,0],
 
-        [0,0,0,0,0],
+        [0,0,3,0],
     ]
-
     program = [
 
-        'MOVE_RIGHT'
+        'EXTRACT_COMPACT'
     ]
 
     result = execute_program(
